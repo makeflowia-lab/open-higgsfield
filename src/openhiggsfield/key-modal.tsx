@@ -36,7 +36,7 @@ export function KeyModal({
       await savePlatformCredentials({ api_key: apiKey });
       onSaved();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Could not save the key");
+      setError(caught instanceof Error ? caught.message : "No se pudo guardar la llave");
     } finally {
       setBusy(false);
     }
@@ -50,7 +50,7 @@ export function KeyModal({
       setApiKey("");
       onCleared();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Could not remove the key");
+      setError(caught instanceof Error ? caught.message : "No se pudo quitar la llave");
     } finally {
       setBusy(false);
     }
@@ -69,22 +69,22 @@ export function KeyModal({
         <div className="ohf-keys-head">
           <div>
             <div id="ohf-keys-title" className="ohf-keys-title">
-              API key
+              Llave de API
             </div>
             <p className="ohf-keys-copy">
               {configured
-                ? "A key is saved in this browser. Enter a new id:secret pair to replace it."
-                : "Paste your platform key as id:secret. It stays in an httpOnly cookie and is sent as Authorization: Key id:secret."}
+                ? "Ya hay una llave guardada en este navegador. Escribe un nuevo par id:secret para reemplazarla."
+                : "Pega tu llave de la plataforma con el formato id:secret. Se guarda en una cookie httpOnly de este navegador y solo se envía a la plataforma al generar."}
             </p>
           </div>
-          <button type="button" className="ohf-icon-btn" aria-label="Close" onClick={onClose}>
+          <button type="button" className="ohf-icon-btn" aria-label="Cerrar" onClick={onClose}>
             <CloseIcon size={13} />
           </button>
         </div>
 
         <form className="ohf-keys-form" onSubmit={(event) => void onSubmit(event)}>
           <label className="ohf-field">
-            <div className="ohf-field-label">API key</div>
+            <div className="ohf-field-label">Llave de API</div>
             <input
               className="ohf-input ohf-input--mono"
               name="api_key"
@@ -105,11 +105,11 @@ export function KeyModal({
           <div className="ohf-keys-actions">
             {configured && (
               <button type="button" className="ohf-btn-quiet" disabled={busy} onClick={() => void onClear()}>
-                Remove key
+                Quitar llave
               </button>
             )}
             <button type="submit" className="ohf-keys-save" disabled={busy || !apiKey.trim()}>
-              {busy ? "Saving…" : configured ? "Replace key" : "Save key"}
+              {busy ? "Guardando…" : configured ? "Reemplazar llave" : "Guardar llave"}
             </button>
           </div>
         </form>

@@ -27,7 +27,7 @@ const COPIED_MS = 1600;
 
 /* The relative time in the header answers "when"; this answers "which run",
    so it is written out in full and never abbreviated. */
-const CREATED = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
+const CREATED = new Intl.DateTimeFormat("es", { dateStyle: "medium", timeStyle: "short" });
 
 /** The shape the media turned out to be, or null while it has none to report —
     a decoded image always has one, a video only once its metadata lands. */
@@ -149,13 +149,13 @@ export function Viewer({
         settingValueLabel(key, value),
       ])
     : item.meta
-      ? [["Output", item.meta]]
+      ? [["Salida", item.meta]]
       : [];
 
   return (
     <dialog
       ref={ref}
-      aria-label={`Run — ${item.modelLabel}`}
+      aria-label={`Generación — ${item.modelLabel}`}
       className="ohf-viewer"
       data-closing={closing || undefined}
       onClose={onClose}
@@ -245,7 +245,7 @@ export function Viewer({
             <button
               type="button"
               className="ohf-icon-btn ohf-viewer-close"
-              aria-label="Close"
+              aria-label="Cerrar"
               onClick={() => leave(onClose)}
             >
               <CloseIcon size={13} />
@@ -263,17 +263,17 @@ export function Viewer({
                   onClick={copyPrompt}
                 >
                   {copied ? <CheckIcon size={12} /> : <CopyIcon size={12} />}
-                  {copied ? "Copied" : "Copy"}
+                  {copied ? "Copiado" : "Copiar"}
                 </button>
               </div>
               <p className="ohf-viewer-prompt">{item.prompt}</p>
             </section>
 
             <section className="ohf-viewer-block">
-              <h3 className="ohf-viewer-label">Details</h3>
+              <h3 className="ohf-viewer-label">Detalles</h3>
               <dl className="ohf-viewer-facts">
                 <div className="ohf-viewer-fact">
-                  <dt>Model</dt>
+                  <dt>Modelo</dt>
                   <dd>{item.modelLabel}</dd>
                 </div>
                 {facts.map(([label, value]) => (
@@ -283,7 +283,7 @@ export function Viewer({
                   </div>
                 ))}
                 <div className="ohf-viewer-fact">
-                  <dt>Created</dt>
+                  <dt>Creado</dt>
                   <dd>{CREATED.format(item.createdAt)}</dd>
                 </div>
               </dl>
@@ -299,14 +299,14 @@ export function Viewer({
               onClick={() => leave(onReuse)}
             >
               <RetryIcon />
-              Recreate
+              Recrear
             </button>
             {/* Names the refusal and the way past it: the same press, now
                 falling through to the anchor's own navigation, hands the file
                 to a tab the browser can save from. */}
             {saveState === "failed" && (
               <p className="ohf-viewer-save-note" role="status">
-                The platform’s CDN refused the read. Open the file to save it from the browser.
+                El servidor de archivos de la plataforma rechazó la lectura. Abre el archivo para guardarlo desde el navegador.
               </p>
             )}
             <div className="ohf-viewer-foot-row">
@@ -320,8 +320,8 @@ export function Viewer({
                   rel="noreferrer"
                   title={
                     saveState === "failed"
-                      ? "The platform’s CDN refused the read — opens the file in a new tab"
-                      : "Save the file to this device"
+                      ? "La plataforma rechazó la lectura: abre el archivo en una pestaña nueva"
+                      : "Guardar el archivo en este dispositivo"
                   }
                   onClick={(event) => {
                     /* Once refused, the press is the fallback: let the anchor
@@ -342,7 +342,7 @@ export function Viewer({
                   ) : (
                     <DownloadIcon />
                   )}
-                  {saveState === "saving" ? "Saving" : saveState === "failed" ? "Open file" : "Download"}
+                  {saveState === "saving" ? "Guardando" : saveState === "failed" ? "Abrir archivo" : "Descargar"}
                 </a>
               )}
               {/* Between the two keeping actions, the way it sits between them on
@@ -353,8 +353,8 @@ export function Viewer({
               <button
                 type="button"
                 className="ohf-icon-btn ohf-viewer-trash"
-                aria-label="Delete run"
-                title="Delete run"
+                aria-label="Eliminar"
+                title="Eliminar"
                 onClick={() => leave(onDelete)}
               >
                 <TrashIcon size={15} />
@@ -366,8 +366,8 @@ export function Viewer({
                 className="ohf-icon-btn ohf-viewer-keep"
                 data-on={item.favorite === true}
                 aria-pressed={item.favorite === true}
-                aria-label={item.favorite ? "Remove from favorites" : "Save to favorites"}
-                title={item.favorite ? "Remove from favorites" : "Save to favorites"}
+                aria-label={item.favorite ? "Quitar de favoritos" : "Guardar en favoritos"}
+                title={item.favorite ? "Quitar de favoritos" : "Guardar en favoritos"}
                 onClick={onFavorite}
               >
                 <HeartIcon size={15} filled={item.favorite === true} />

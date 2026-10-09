@@ -23,20 +23,20 @@ import { ModelIcon } from "./model-icon";
 
 const EMPTY: Record<GalleryView, { title: string; hint: string }> = {
   image: {
-    title: "Your image runs land here",
-    hint: "Describe a subject below, pick a model, press Generate. Every finished run stays in this browser.",
+    title: "Aquí aparecen tus imágenes",
+    hint: "Describe abajo lo que quieres ver, elige un modelo y presiona Generar. Todo lo que generes se queda guardado en este navegador.",
   },
   video: {
-    title: "Your video runs land here",
-    hint: "Describe the shot below, pick a model, press Generate. Every finished run stays in this browser.",
+    title: "Aquí aparecen tus videos",
+    hint: "Describe abajo la toma, elige un modelo y presiona Generar. Todo lo que generes se queda guardado en este navegador.",
   },
   assets: {
-    title: "Nothing generated yet",
-    hint: "Image and video runs both land in this grid and stay in this browser.",
+    title: "Aún no has generado nada",
+    hint: "Las imágenes y los videos que generes aparecen juntos aquí y se quedan en este navegador.",
   },
   favorites: {
-    title: "Nothing kept yet",
-    hint: "Hover a run and press its heart to keep it here. Kept runs stay put when older ones age out of the history.",
+    title: "Aún no tienes favoritos",
+    hint: "Pasa el cursor sobre una generación y presiona el corazón para guardarla aquí. Los favoritos no se borran cuando el historial se llena.",
   },
 };
 
@@ -145,8 +145,8 @@ const Tile = memo(function Tile({
       className="ohf-pick"
       role="checkbox"
       aria-checked={picked}
-      aria-label={`Select run — ${named}`}
-      title={picked ? "Deselect" : "Select"}
+      aria-label={`Seleccionar — ${named}`}
+      title={picked ? "Quitar selección" : "Seleccionar"}
       onClick={(event) => onPick(item.id, index, event.shiftKey)}
     >
       <span className="ohf-pick-box">
@@ -159,8 +159,8 @@ const Tile = memo(function Tile({
     <button
       type="button"
       className="ohf-tile-act ohf-tile-act--danger"
-      aria-label={`Delete run — ${named}`}
-      title="Delete run"
+      aria-label={`Eliminar — ${named}`}
+      title="Eliminar"
       onClick={() => onDelete(item)}
     >
       <TrashIcon size={15} />
@@ -177,16 +177,16 @@ const Tile = memo(function Tile({
           <span className="ohf-fail-ic">
             <WarningIcon />
           </span>
-          <span className="ohf-fail-title">{item.modelLabel} didn’t deliver</span>
+          <span className="ohf-fail-title">{item.modelLabel} no entregó resultado</span>
           <span className="ohf-fail-why">{item.error}</span>
           <button
             type="button"
             className="ohf-btn-solid"
-            title="Reuse prompt and settings"
+            title="Reusar el prompt y la configuración"
             onClick={() => onReuse(item)}
           >
             <RetryIcon />
-            Retry this run
+            Reintentar
           </button>
         </div>
         {picker}
@@ -241,8 +241,8 @@ const Tile = memo(function Tile({
         }
         aria-label={
           selecting
-            ? `${picked ? "Deselect" : "Select"} run — ${named}`
-            : `Open run — ${item.modelLabel}: ${item.prompt}`
+            ? `${picked ? "Quitar selección" : "Seleccionar"} — ${named}`
+            : `Abrir — ${item.modelLabel}: ${item.prompt}`
         }
       />
 
@@ -283,8 +283,8 @@ const Tile = memo(function Tile({
         <button
           type="button"
           className="ohf-tile-act"
-          aria-label={`Reuse prompt and settings — ${named}`}
-          title="Reuse prompt and settings"
+          aria-label={`Reusar el prompt y la configuración — ${named}`}
+          title="Reusar el prompt y la configuración"
           onClick={() => onReuse(item)}
         >
           <RetryIcon size={15} />
@@ -296,8 +296,8 @@ const Tile = memo(function Tile({
           <button
             type="button"
             className="ohf-tile-act"
-            aria-label={saving ? `Saving — ${named}` : `Download run — ${named}`}
-            title={saving ? "Saving" : "Download"}
+            aria-label={saving ? `Guardando — ${named}` : `Descargar — ${named}`}
+            title={saving ? "Guardando" : "Descargar"}
             onClick={() => {
               if (saving) return;
               setSaving(true);
@@ -313,8 +313,8 @@ const Tile = memo(function Tile({
           data-on={saved}
           data-beat={beat || undefined}
           aria-pressed={saved}
-          aria-label={`${saved ? "Remove from favorites" : "Save to favorites"} — ${named}`}
-          title={saved ? "Remove from favorites" : "Save to favorites"}
+          aria-label={`${saved ? "Quitar de favoritos" : "Guardar en favoritos"} — ${named}`}
+          title={saved ? "Quitar de favoritos" : "Guardar en favoritos"}
           onClick={() => {
             if (!saved) setBeat(true);
             onFavorite(item);
@@ -559,9 +559,9 @@ function RunningTile({ run }: { run: ActiveRun }) {
     <div
       className="ohf-skeleton"
       role="status"
-      aria-label={`${run.modelLabel} rendering`}
+      aria-label={`${run.modelLabel} generando`}
     >
-      <span className="ohf-skeleton-label">Rendering</span>
+      <span className="ohf-skeleton-label">Generando</span>
       <span className="ohf-skeleton-clock">
         {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")}
       </span>

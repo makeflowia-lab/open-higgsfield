@@ -14,19 +14,21 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 /* ---------- the mark ---------- */
 
 const PLATE = "#0e1011";
-const ACCENT = "#6fe3c0";
+const ACCENT = "#d1fe17";
 const INK = "#c2c9c8";
 
-/** The two brackets on a 32-unit field. Keep in step with src/app/icon.svg. */
+/** The M on a 32-unit field: one accent stroke that flows down, up and across,
+    and the ink stem that closes it. Keep in step with src/app/icon.svg. */
 function brackets({ stroke = 2.5, accent = ACCENT, ink = INK } = {}) {
   return `<g fill="none" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M19.5 6.5H8.9A2.4 2.4 0 0 0 6.5 8.9V17" stroke="${accent}"/>
-    <path d="M12.5 25.5H23.1a2.4 2.4 0 0 0 2.4-2.4V15" stroke="${ink}"/>
+    <path d="M7.5 23.5V9.5L16 18l8.5-8.5" stroke="${accent}"/>
+    <path d="M24.5 15.5v8" stroke="${ink}"/>
   </g>`;
 }
 
@@ -65,6 +67,9 @@ function findChrome() {
     ),
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+    "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
   ].filter(Boolean);
 
   const found = candidates.find((path) => existsSync(path));
@@ -76,7 +81,7 @@ function findChrome() {
 
 const CHROME = findChrome();
 const ROOT = resolve(import.meta.dirname, "..");
-const WORK = mkdtempSync(join(tmpdir(), "openhiggsfield-brand-"));
+const WORK = mkdtempSync(join(tmpdir(), "makeflow-studio-brand-"));
 
 function shoot(out, html, width, height, { transparent = false } = {}) {
   const page = join(WORK, `${width}x${height}-${Math.abs(hash(out))}.html`);
@@ -93,11 +98,11 @@ function shoot(out, html, width, height, { transparent = false } = {}) {
       ...(transparent ? ["--default-background-color=00000000"] : []),
       `--window-size=${width},${height}`,
       `--screenshot=${out}`,
-      `file://${page}`,
+      pathToFileURL(page).href,
     ],
     { stdio: ["ignore", "ignore", "pipe"] },
   );
-  console.log(`  ${out.replace(`${ROOT}/`, "")}  ${width}×${height}`);
+  console.log(`  ${relative(ROOT, out)}  ${width}×${height}`);
 }
 
 function hash(str) {
@@ -141,7 +146,7 @@ const og = `<!doctype html><meta charset="utf-8">
   body{
     position:relative;
     background:
-      radial-gradient(110% 85% at 4% -8%, rgba(111,227,192,0.06), transparent 56%),
+      radial-gradient(110% 85% at 4% -8%, rgba(209,254,23,0.06), transparent 56%),
       radial-gradient(95% 115% at 104% 108%, rgba(255,255,255,0.032), transparent 60%),
       #0a0a0b;
     color:#edefef;
@@ -164,13 +169,13 @@ const og = `<!doctype html><meta charset="utf-8">
   .rule{margin:34px 0 28px;width:455px;height:1px;background:rgba(255,255,255,.09)}
   p{font-size:24px;line-height:1.45;color:#a8aeaf;max-width:530px;letter-spacing:-.011em}
 </style>
-<div class="field">${markSvg(454, { stroke: 1.15, accent: "rgba(111,227,192,0.17)", ink: "rgba(255,255,255,0.085)" })}</div>
+<div class="field">${markSvg(454, { stroke: 1.15, accent: "rgba(209,254,23,0.17)", ink: "rgba(255,255,255,0.085)" })}</div>
 <div class="band mark">${markSvg(58, { stroke: 2.5 })}</div>
 <div class="mid"><div class="band">
-  <h1>OpenHiggsfield AI</h1>
-  <div class="descriptor">Open source AI studio</div>
+  <h1>MakeFlow Studio</h1>
+  <div class="descriptor">Estudio de IA de código abierto</div>
   <div class="rule"></div>
-  <p>One prompt bar for image and video. Each model&rsquo;s own settings, and every finished run in one gallery.</p>
+  <p>Una sola barra de prompt para imagen y video. Los ajustes propios de cada modelo y todas tus generaciones en una galería.</p>
 </div></div>
 <div class="grain"></div>`;
 

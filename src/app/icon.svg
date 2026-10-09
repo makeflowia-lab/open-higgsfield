@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <title>OpenHiggsfield AI</title>
+  <title>MakeFlow Studio</title>
   <style>
     .plate { fill: #0e1011 }
     .edge { stroke: rgba(255, 255, 255, 0.11) }
@@ -11,7 +11,7 @@
   <rect class="plate" width="32" height="32" rx="7.5" fill="#0e1011"/>
   <rect class="edge" x=".5" y=".5" width="31" height="31" rx="7" fill="none" stroke="rgba(255,255,255,0.11)"/>
   <g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M19.5 6.5H8.9A2.4 2.4 0 0 0 6.5 8.9V17" stroke="#d1fe17"/>
-    <path d="M12.5 25.5H23.1a2.4 2.4 0 0 0 2.4-2.4V15" stroke="#c2c9c8"/>
+    <path d="M7.5 23.5V9.5L16 18l8.5-8.5" stroke="#d1fe17"/>
+    <path d="M24.5 15.5v8" stroke="#c2c9c8"/>
   </g>
 </svg>

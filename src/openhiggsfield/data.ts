@@ -3,7 +3,7 @@ import type { MediaRole, ModelEntry, Surface } from "@/generation/catalog";
 export const SURFACES: readonly Surface[] = ["image", "video"];
 
 export const SURFACE_LABELS: Record<Surface, string> = {
-  image: "Image",
+  image: "Imagen",
   video: "Video",
 };
 
@@ -18,13 +18,13 @@ export const VIEWS: readonly GalleryView[] = ["image", "video", "assets", "favor
 
 export const VIEW_LABELS: Record<GalleryView, string> = {
   ...SURFACE_LABELS,
-  assets: "Assets",
-  favorites: "Favorites",
+  assets: "Recursos",
+  favorites: "Favoritos",
 };
 
 export const PROMPT_PLACEHOLDERS: Record<Surface, string> = {
-  image: "Describe the image — subject, style, light, lens…",
-  video: "Describe the shot — subject, camera move, light, pacing…",
+  image: "Describe la imagen: sujeto, estilo, luz, lente…",
+  video: "Describe la toma: sujeto, movimiento de cámara, luz, ritmo…",
 };
 
 /* The pool the empty state draws from. Each line is a whole prompt — subject,
@@ -32,32 +32,32 @@ export const PROMPT_PLACEHOLDERS: Record<Surface, string> = {
    Generate on rather than a fragment to finish. */
 export const SAMPLES: Record<Surface, string[]> = {
   image: [
-    "Portrait of a beekeeper in a sunlit orchard, medium format film, shallow depth of field",
-    "Isometric cutaway of a tiny recording studio, warm tungsten light, matte clay render",
-    "Editorial still life: brutalist concrete vases with wild poppies, hard noon shadows",
-    "Rain-slick alley at midnight, sodium lamps, reflections in every puddle, 35mm",
-    "Studio portrait of an elderly luthier holding a half-built violin, single softbox, black backdrop",
-    "Aerial top-down of salt evaporation ponds, pink and ochre geometry, midday clarity",
-    "Cutaway illustration of a mechanical watch movement, blueprint lines on warm paper",
-    "Overgrown modernist house reclaimed by ferns, overcast light, large format detail",
-    "Matte ceramic espresso cup on wet slate, rim light, steam caught mid-curl",
-    "1970s ski lodge interior, wood paneling and orange wool, low winter sun through glass",
-    "Hands kneading dough on floured marble, window light, muted palette, close crop",
-    "Desert observatory at blue hour, long exposure, star trails over a white dome",
+    "Retrato de un apicultor en un huerto soleado, película de formato medio, poca profundidad de campo",
+    "Corte isométrico de un pequeño estudio de grabación, luz cálida de tungsteno, render de arcilla mate",
+    "Bodegón editorial: jarrones brutalistas de concreto con amapolas silvestres, sombras duras de mediodía",
+    "Callejón mojado por la lluvia a medianoche, lámparas de sodio, reflejos en cada charco, 35mm",
+    "Retrato de estudio de un laudero anciano con un violín a medio construir, una sola caja de luz, fondo negro",
+    "Vista aérea cenital de salinas de evaporación, geometría rosa y ocre, claridad de mediodía",
+    "Ilustración en corte del mecanismo de un reloj mecánico, líneas de plano sobre papel cálido",
+    "Casa modernista cubierta de helechos, luz nublada, detalle de gran formato",
+    "Taza de espresso de cerámica mate sobre pizarra mojada, luz de contorno, vapor atrapado en pleno rizo",
+    "Interior de un refugio de esquí de los años 70, paneles de madera y lana naranja, sol bajo de invierno tras el vidrio",
+    "Manos amasando sobre mármol enharinado, luz de ventana, paleta apagada, encuadre cerrado",
+    "Observatorio en el desierto a la hora azul, larga exposición, estelas de estrellas sobre una cúpula blanca",
   ],
   video: [
-    "Slow aerial dolly over fog-covered pine forest at dawn, volumetric light through the canopy",
-    "Macro shot of ink blooming in water, backlit, ultra slow motion, black backdrop",
-    "Handheld tracking shot through a neon market at night, rain on lenses, shallow focus",
-    "Locked-off shot of a diner at 3am, one customer, rain outside, sign flickering",
-    "Slow push-in on a sculptor's hands shaping wet clay, north-facing window light",
-    "Drone orbit around a lighthouse in heavy swell, grey sea, spray hitting the lens",
-    "Timelapse of cloud shadows sweeping a canyon rim, golden hour into dusk",
-    "Steadicam walk through an empty greenhouse, dust in shafts of light, slow reveal",
-    "Whip pan from a spinning record to a dancer mid-turn, tungsten glow, heavy motion blur",
-    "Underwater shot of a swimmer breaking the surface, bubbles, sunlight refracting",
-    "Static wide of a train crossing a viaduct at dusk, lit windows, long lens compression",
-    "Slow tilt down a glass tower facade to a busy crosswalk, overcast city light",
+    "Travelling aéreo lento sobre un bosque de pinos cubierto de niebla al amanecer, luz volumétrica entre las copas",
+    "Toma macro de tinta abriéndose en agua, a contraluz, cámara ultralenta, fondo negro",
+    "Seguimiento con cámara en mano por un mercado de neón de noche, lluvia en el lente, foco selectivo",
+    "Toma fija de una cafetería a las 3 de la mañana, un solo cliente, lluvia afuera, letrero parpadeando",
+    "Acercamiento lento a las manos de un escultor moldeando arcilla húmeda, luz de ventana al norte",
+    "Órbita de dron alrededor de un faro con mar picado, mar gris, la brisa golpeando el lente",
+    "Timelapse de sombras de nubes barriendo el borde de un cañón, de la hora dorada al anochecer",
+    "Recorrido con steadicam por un invernadero vacío, polvo en los rayos de luz, revelación lenta",
+    "Barrido rápido de un disco girando a una bailarina a media vuelta, brillo de tungsteno, mucho desenfoque de movimiento",
+    "Toma submarina de un nadador rompiendo la superficie, burbujas, luz del sol refractándose",
+    "Plano general fijo de un tren cruzando un viaducto al atardecer, ventanas encendidas, compresión de teleobjetivo",
+    "Inclinación lenta por la fachada de una torre de vidrio hasta un cruce peatonal concurrido, luz nublada de ciudad",
   ],
 };
 
@@ -74,20 +74,20 @@ export function pickSamples(surface: Surface, count = 3): string[] {
 }
 
 const SETTING_LABELS: Record<string, string> = {
-  aspectRatio: "Aspect ratio",
-  resolution: "Resolution",
-  outputFormat: "Format",
-  duration: "Duration",
-  generateAudio: "Generate audio",
-  batchSize: "Batch size",
-  enhancePrompt: "Enhance prompt",
-  thinking: "Thinking",
-  numImages: "Images",
-  sound: "Sound",
+  aspectRatio: "Proporción",
+  resolution: "Resolución",
+  outputFormat: "Formato",
+  duration: "Duración",
+  generateAudio: "Generar audio",
+  batchSize: "Cantidad",
+  enhancePrompt: "Mejorar prompt",
+  thinking: "Razonamiento",
+  numImages: "Imágenes",
+  sound: "Sonido",
   cfgScale: "CFG",
-  multiShots: "Multi-shot",
-  keepOriginalSound: "Keep original sound",
-  characterOrientation: "Orientation",
+  multiShots: "Multitoma",
+  keepOriginalSound: "Conservar sonido original",
+  characterOrientation: "Orientación",
 };
 
 /* A pill carries one word; "Generate audio" is a panel label, not a control on
@@ -110,7 +110,7 @@ export function settingPillLabel(key: string): string {
 /* Values arrive in the platform's own casing. Only the units conventionally
    set in caps are lifted; "720p" and "16:9" are already how they are written. */
 export function settingValueLabel(key: string, value: unknown): string {
-  if (typeof value === "boolean") return value ? "On" : "Off";
+  if (typeof value === "boolean") return value ? "Sí" : "No";
   if (typeof value === "number") return key === "duration" ? `${value}s` : String(value);
   const text = String(value);
   if (text === "auto") return "Auto";
@@ -120,17 +120,17 @@ export function settingValueLabel(key: string, value: unknown): string {
 }
 
 export const ROLE_LABELS: Record<MediaRole, string> = {
-  start: "Start frame",
-  end: "End frame",
-  reference: "Reference",
+  start: "Cuadro inicial",
+  end: "Cuadro final",
+  reference: "Referencia",
   video: "Video",
   audio: "Audio",
 };
 
 /* Slate tags for the attachment tiles, where the full label will not fit. */
 export const ROLE_TAGS: Record<MediaRole, string> = {
-  start: "START",
-  end: "END",
+  start: "INICIO",
+  end: "FIN",
   reference: "REF",
   video: "VIDEO",
   audio: "AUDIO",
@@ -151,11 +151,11 @@ export const ROLE_KINDS: Record<MediaRole, AssetKind> = {
 /* The picker's confirm button names what it attaches — "Add 2 references",
    "Add start frame" — so each role carries its plural rather than taking an s. */
 const ROLE_PLURALS: Record<MediaRole, string> = {
-  start: "start frames",
-  end: "end frames",
-  reference: "references",
-  video: "clips",
-  audio: "audio tracks",
+  start: "cuadros iniciales",
+  end: "cuadros finales",
+  reference: "referencias",
+  video: "videos",
+  audio: "pistas de audio",
 };
 
 export function roleNoun(role: MediaRole, count: number): string {
@@ -203,27 +203,27 @@ export function ratioToCss(value: unknown, fallback: string): string {
 /* Two roles share one word — a start and an end frame are both frames — so the
    phrases dedupe before they are listed. */
 const ROLE_PHRASES: Record<MediaRole, string> = {
-  start: "frames",
-  end: "frames",
-  reference: "references",
+  start: "cuadros",
+  end: "cuadros",
+  reference: "referencias",
   video: "clips",
   audio: "audio",
 };
 
 function joinPhrases(parts: string[]): string {
   if (parts.length < 2) return parts[0] ?? "";
-  return `${parts.slice(0, -1).join(", ")} or ${parts[parts.length - 1]}`;
+  return `${parts.slice(0, -1).join(", ")} o ${parts[parts.length - 1]}`;
 }
 
 /** The line under a model's name in the picker, derived from the entry itself:
     what it makes, what it takes, where its allow-lists top out. The catalog
     stays the only place a model's truth is written down. */
 export function describeModel(model: ModelEntry): string {
-  const noun = model.surface === "image" ? "Images" : "Video";
+  const noun = model.surface === "image" ? "Imágenes" : "Video";
   const inputs = [...new Set(rolesOf(model).map((role) => ROLE_PHRASES[role]))];
   const source = inputs.length
-    ? `${noun} from a prompt, ${joinPhrases(inputs)}`
-    : `${noun} from a prompt`;
+    ? `${noun} desde un prompt, ${joinPhrases(inputs)}`
+    : `${noun} desde un prompt`;
 
   const limits: string[] = [];
   const resolution = model.settings.resolution;
@@ -231,7 +231,7 @@ export function describeModel(model: ModelEntry): string {
      last value it lists. */
   if (resolution?.type === "enum" && resolution.values.length > 0) {
     const top = resolution.values[resolution.values.length - 1]!;
-    limits.push(`to ${settingValueLabel("resolution", top)}`);
+    limits.push(`hasta ${settingValueLabel("resolution", top)}`);
   }
   const duration = model.settings.duration;
   if (duration?.type === "range") limits.push(`${duration.min}–${duration.max}s`);

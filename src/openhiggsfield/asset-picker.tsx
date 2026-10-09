@@ -21,8 +21,14 @@ type Source = "uploads" | "generations";
 const SOURCES: readonly Source[] = ["uploads", "generations"];
 
 const SOURCE_LABELS: Record<Source, string> = {
-  uploads: "Uploads",
-  generations: "Generations",
+  uploads: "Subidos",
+  generations: "Generados",
+};
+
+const KIND_WORDS: Record<AssetKind, string> = {
+  image: "imagen",
+  video: "video",
+  audio: "audio",
 };
 
 interface Asset {
@@ -184,10 +190,10 @@ export function AssetPicker({
   const empty = emptyCopy(shelf, kind);
   const canUpload = room > 0 && !uploading;
   const uploadTip = uploading
-    ? "Uploading…"
+    ? "Subiendo…"
     : room > 0
-      ? `Upload a ${roleNoun(role, 1)} from this device`
-      : `Every ${roleNoun(role, 1)} slot is taken — press one off to free it`;
+      ? `Subir desde este dispositivo (${roleNoun(role, 1)})`
+      : `Ya no hay espacio (${roleNoun(role, 1)}): quita uno para liberar lugar`;
 
   /* The button states the difference it will make, so a set edited down reads
      as a removal rather than as an "Add" that removes. */
@@ -196,20 +202,20 @@ export function AssetPicker({
   const dropped = current.filter((url) => !picked.has(url)).length;
   const applyLabel =
     added && dropped
-      ? `Replace ${roleNoun(role, Math.max(added, dropped))}`
+      ? `Reemplazar ${roleNoun(role, Math.max(added, dropped))}`
       : added
-        ? `Add ${added > 1 ? `${added} ` : ""}${roleNoun(role, added)}`
+        ? `Agregar ${added > 1 ? `${added} ` : ""}${roleNoun(role, added)}`
         : dropped
-          ? `Remove ${dropped > 1 ? `${dropped} ` : ""}${roleNoun(role, dropped)}`
-          : "Done";
+          ? `Quitar ${dropped > 1 ? `${dropped} ` : ""}${roleNoun(role, dropped)}`
+          : "Listo";
 
   return (
-    <div className="ohf-popover ohf-popover--assets" role="dialog" aria-label="Add input">
+    <div className="ohf-popover ohf-popover--assets" role="dialog" aria-label="Agregar archivo de entrada">
       <div className="ohf-assets-head">
         <div
           className="ohf-assets-tabs"
           role="tablist"
-          aria-label="Asset source"
+          aria-label="Origen del archivo"
           ref={tabsRef}
           onKeyDown={onTabKeyDown}
         >
@@ -236,8 +242,8 @@ export function AssetPicker({
         <button
           type="button"
           className="ohf-icon-btn ohf-icon-btn--ghost ohf-picker-close"
-          aria-label="Close"
-          title="Close"
+          aria-label="Cerrar"
+          title="Cerrar"
           onClick={onClose}
         >
           <CloseIcon size={13} />
@@ -247,7 +253,7 @@ export function AssetPicker({
       {/* Which slot this panel is editing. Models declaring one role need no
           switch — the footer already names what is being changed. */}
       {roles.length > 1 && (
-        <div className="ohf-assets-roles" role="group" aria-label="Input slot">
+        <div className="ohf-assets-roles" role="group" aria-label="Tipo de entrada">
           {roles.map((entry) => {
             const used =
               entry === role ? selected.length : items.filter((item) => item.role === entry).length;
@@ -285,7 +291,7 @@ export function AssetPicker({
                 onClick={() => onUpload(role)}
               >
                 <UploadIcon />
-                Upload file
+                Subir archivo
               </button>
             )}
           </div>
@@ -301,7 +307,7 @@ export function AssetPicker({
                 onClick={() => onUpload(role)}
               >
                 {uploading ? <span className="ohf-spinner" aria-hidden /> : <UploadIcon size={17} />}
-                <span className="ohf-asset-upload-label">Upload file</span>
+                <span className="ohf-asset-upload-label">Subir archivo</span>
               </button>
             )}
 
@@ -323,7 +329,7 @@ export function AssetPicker({
 
       <div className="ohf-assets-foot">
         <span className="ohf-assets-tally">
-          {selected.length} of {max} {roleNoun(role, max)}
+          {selected.length} de {max} {roleNoun(role, max)}
         </span>
         {/* Never disabled: with no change left to apply it is simply the way
             out, and the panel always offers one press that ends the task. */}
@@ -347,19 +353,19 @@ function urlsOf(items: MediaItem[], role: MediaRole): string[] {
 function emptyCopy(source: Source, kind: AssetKind): { title: string; hint: string } {
   if (source === "uploads") {
     return {
-      title: "Nothing uploaded yet",
-      hint: "Files you send from this device stay on this shelf for the next run too.",
+      title: "Aún no has subido nada",
+      hint: "Los archivos que subas desde este dispositivo se quedan aquí para usarlos también en la siguiente generación.",
     };
   }
   if (kind === "audio") {
     return {
-      title: "Runs never return audio",
-      hint: "Attach an audio track from this device instead — it lands on the Uploads shelf.",
+      title: "Las generaciones no devuelven audio",
+      hint: "Mejor adjunta una pista de audio desde este dispositivo: aparecerá en la pestaña Subidos.",
     };
   }
   return {
-    title: `No finished ${kind} runs yet`,
-    hint: `Every ${kind} you generate lands here, ready to feed the next run.`,
+    title: `Aún no hay generaciones de ${KIND_WORDS[kind]} terminadas`,
+    hint: `Todo lo que generes de ${KIND_WORDS[kind]} aparece aquí para usarlo en la siguiente generación.`,
   };
 }
 

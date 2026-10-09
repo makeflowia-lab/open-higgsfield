@@ -101,8 +101,8 @@ export function useMediaTray(
     } catch (caught) {
       onError(
         caught instanceof Error
-          ? `Upload failed — ${caught.message}. Check the Blob store is configured, then retry.`
-          : "Upload failed. Retry, or drop the file and generate from the prompt alone.",
+          ? `No se pudo subir el archivo: ${caught.message}. Revisa que el almacenamiento Blob esté configurado y reintenta.`
+          : "No se pudo subir el archivo. Reintenta, o quítalo y genera solo con el prompt.",
       );
     } finally {
       setUploading(false);
@@ -184,7 +184,7 @@ export function MediaStrip({ model }: { model: ModelEntry }) {
           <button
             type="button"
             className="ohf-strip-remove"
-            aria-label={`Remove ${ROLE_LABELS[item.role].toLowerCase()}`}
+            aria-label={`Quitar ${ROLE_LABELS[item.role].toLowerCase()}`}
             onClick={() => media.remove(item.id)}
           >
             <CloseIcon size={10} />

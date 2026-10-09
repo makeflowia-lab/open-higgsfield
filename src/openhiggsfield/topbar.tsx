@@ -72,13 +72,13 @@ export function Topbar({
 
   return (
     <div className="ohf-topbar">
-      <h1 className="ohf-sr">OpenHiggsfield AI — Open source AI studio</h1>
+      <h1 className="ohf-sr">MakeFlow Studio — Estudio de IA de código abierto</h1>
 
       <div className="ohf-bar ohf-enter-1">
         <div
           className="ohf-tabs"
           role="tablist"
-          aria-label="Gallery scope"
+          aria-label="Sección de la galería"
           ref={tabsRef}
           onKeyDown={onKeyDown}
         >
@@ -130,11 +130,11 @@ export function Topbar({
           data-busy={busy}
           data-ready={keyConfigured}
           onClick={onKeys}
-          aria-label={keyConfigured ? "Edit platform key" : "Add platform key"}
-          title={keyConfigured ? "Edit platform key" : "Add platform key"}
+          aria-label={keyConfigured ? "Cambiar la llave de la plataforma" : "Agregar la llave de la plataforma"}
+          title={keyConfigured ? "Cambiar la llave de la plataforma" : "Agregar la llave de la plataforma"}
         >
           <KeyIcon />
-          <span className="ohf-key-text">{keyConfigured ? "Your key" : "Add key"}</span>
+          <span className="ohf-key-text">{keyConfigured ? "Tu llave" : "Agregar llave"}</span>
           <span className="ohf-lamp" />
         </button>
       </div>

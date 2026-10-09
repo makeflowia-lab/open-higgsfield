@@ -68,7 +68,7 @@ export function SettingPill({
         type="button"
         className="ohf-ctl ohf-ctl--flag"
         aria-pressed={on}
-        aria-label={`${label} — ${on ? "on" : "off"}`}
+        aria-label={`${label} — ${on ? "activado" : "desactivado"}`}
         onClick={() => settings.set(model.id, { [settingKey]: !on })}
       >
         {glyph && (

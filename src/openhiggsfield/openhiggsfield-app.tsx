@@ -142,19 +142,21 @@ function failedRows(requestId: string, count: number, draft: RunDraft, error: st
   }));
 }
 
+const KEY_NEEDED = "Agrega tu llave de la plataforma para generar.";
+
 function failureText(status: GenerationStatus): string {
-  if (status.status === "nsfw") return "the platform flagged the result as NSFW";
-  if (status.status === "canceled") return "the run was canceled";
+  if (status.status === "nsfw") return "la plataforma marcó el resultado como contenido sensible (NSFW)";
+  if (status.status === "canceled") return "la generación fue cancelada";
   if (typeof status.error === "string" && status.error) return status.error;
-  return "the platform reported a failure";
+  return "la plataforma reportó una falla";
 }
 
 function describeError(caught: unknown): string {
   const message = caught instanceof Error ? caught.message : String(caught);
   if (caught instanceof MissingCredentialsError || message.includes("Missing platform key")) {
-    return "Add your platform key to generate.";
+    return KEY_NEEDED;
   }
-  return `Generation failed — ${message}. Try again; if it repeats, check the key in the sidebar.`;
+  return `La generación falló: ${message}. Intenta de nuevo; si se repite, revisa tu llave.`;
 }
 
 export function OpenHiggsfieldApp({ fontClassName = "" }: { fontClassName?: string }) {
@@ -265,16 +267,16 @@ export function OpenHiggsfieldApp({ fontClassName = "" }: { fontClassName?: stri
         });
         markFresh(records.filter((record) => record.status === "completed").map((record) => record.id));
         if (records.some((record) => record.status === "failed")) {
-          const failure = records[0]?.error ?? "the platform reported a failure";
+          const failure = records[0]?.error ?? "la plataforma reportó una falla";
           setError(
             (prev) =>
-              prev ?? `Run not delivered — ${failure}. Adjust the prompt or settings and retry.`,
+              prev ?? `Generación no entregada: ${failure}. Ajusta el prompt o la configuración y reintenta.`,
           );
         }
       } catch (caught) {
         if (!alive.current) return;
         const message = describeError(caught);
-        if (message.includes("platform key")) setKeysOpen(true);
+        if (message === KEY_NEEDED) setKeysOpen(true);
         setHistory((prev) => {
           const next = replaceRequest(prev, requestId, failedRows(requestId, expected, draft, message));
           void saveHistory(next);
@@ -326,7 +328,7 @@ export function OpenHiggsfieldApp({ fontClassName = "" }: { fontClassName?: stri
   const generate = useCallback(async () => {
     if (!keyConfigured) {
       setKeysOpen(true);
-      setError("Add your platform key to generate.");
+      setError(KEY_NEEDED);
       return;
     }
     const plane = assemblePlane();
@@ -390,7 +392,7 @@ export function OpenHiggsfieldApp({ fontClassName = "" }: { fontClassName?: stri
       } catch (caught) {
         if (!alive.current) return;
         const message = describeError(caught);
-        if (message.includes("platform key")) setKeysOpen(true);
+        if (message === KEY_NEEDED) setKeysOpen(true);
         setError((prev) => prev ?? message);
       } finally {
         if (alive.current) {
@@ -556,7 +558,7 @@ export function OpenHiggsfieldApp({ fontClassName = "" }: { fontClassName?: stri
     const ok = await saveFile(url, fileNameFor(record, 0));
     if (!ok) {
       setError(
-        "The platform’s CDN refused the read, so this run could not be saved. Open it to save it from the browser instead.",
+        "El servidor de archivos de la plataforma rechazó la lectura, así que no se pudo guardar. Ábrela para guardarla desde el navegador.",
       );
     }
   }, []);
@@ -578,8 +580,8 @@ export function OpenHiggsfieldApp({ fontClassName = "" }: { fontClassName?: stri
     if (refused > 0) {
       setError(
         refused === files.length
-          ? "The platform’s CDN refused the read, so nothing could be saved. Open a run to save it from the browser instead."
-          : `${refused} of ${files.length} files could not be saved — the platform’s CDN refused the read. Open those runs to save them from the browser.`,
+          ? "El servidor de archivos de la plataforma rechazó la lectura, así que no se guardó nada. Abre una generación para guardarla desde el navegador."
+          : `${refused} de ${files.length} archivos no se pudieron guardar: el servidor de archivos de la plataforma rechazó la lectura. Abre esas generaciones para guardarlas desde el navegador.`,
       );
     }
   }, [pickedRecords]);
@@ -737,8 +739,8 @@ function UndoBar({
   const subject = one
     ? one.prompt
       ? `“${one.prompt}”`
-      : `${one.modelLabel} run`
-    : `${records.length} runs`;
+      : `generación de ${one.modelLabel}`
+    : `${records.length} generaciones`;
 
   return (
     <div className="ohf-undo" role="status">
@@ -747,15 +749,15 @@ function UndoBar({
         style={{ animationDuration: `${UNDO_MS}ms` }}
         aria-hidden
       />
-      <span className="ohf-undo-text">{`Deleted ${subject}`}</span>
+      <span className="ohf-undo-text">{`Se eliminó: ${subject}`}</span>
       <button type="button" className="ohf-undo-act" onClick={onUndo}>
         <UndoIcon />
-        Undo
+        Deshacer
       </button>
       <button
         type="button"
         className="ohf-icon-btn ohf-icon-btn--ghost"
-        aria-label="Dismiss"
+        aria-label="Cerrar"
         onClick={onDismiss}
       >
         <CloseIcon size={12} />

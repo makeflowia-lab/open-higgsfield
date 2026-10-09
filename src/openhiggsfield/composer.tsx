@@ -208,10 +208,10 @@ export function Composer({
     setOverlay(next);
   }
 
-  const attachLabel = tray.allFull ? "Change the inputs" : "Add an input";
+  const attachLabel = tray.allFull ? "Cambiar los archivos de entrada" : "Agregar un archivo de entrada";
   const settingKey = overlay?.startsWith(SETTING) ? overlay.slice(SETTING.length) : null;
-  const generateLabel = batchValue > 1 ? `Generate ${batchValue} results` : "Generate";
-  const generateTip = disabled ? "Write a prompt first" : `${generateLabel} · ${shortcut ?? "⌘↵"}`;
+  const generateLabel = batchValue > 1 ? `Generar ${batchValue} resultados` : "Generar";
+  const generateTip = disabled ? "Primero escribe un prompt" : `${generateLabel} · ${shortcut ?? "⌘↵"}`;
 
   return (
     <div className="ohf-dock" ref={dockRef} data-selecting={selecting}>
@@ -236,8 +236,8 @@ export function Composer({
             <button
               type="button"
               className="ohf-icon-btn ohf-icon-btn--ghost"
-              aria-label="Dismiss error"
-              title="Dismiss error"
+              aria-label="Cerrar el aviso"
+              title="Cerrar el aviso"
               onClick={() => onError(null)}
             >
               <CloseIcon size={12} />
@@ -289,7 +289,7 @@ export function Composer({
                     className="ohf-attach ohf-tip ohf-tip--start"
                     data-tip={attachLabel}
                     disabled={tray.allFull}
-                    aria-label={tray.uploading ? "Uploading" : attachLabel}
+                    aria-label={tray.uploading ? "Subiendo" : attachLabel}
                     aria-expanded={overlay === ASSETS}
                     aria-haspopup="dialog"
                     onClick={(event) => toggle(ASSETS, event.currentTarget)}
@@ -332,7 +332,7 @@ export function Composer({
                 <button
                   type="button"
                   className="ohf-ctl ohf-ctl--model ohf-tip"
-                  data-tip="Change model"
+                  data-tip="Cambiar modelo"
                   aria-expanded={overlay === PICKER}
                   aria-haspopup="dialog"
                   onClick={(event) => toggle(PICKER, event.currentTarget)}
@@ -378,7 +378,7 @@ export function Composer({
                   <span className="ohf-generate-glyph" aria-hidden>
                     <ArrowUpIcon size={15} />
                   </span>
-                  <span className="ohf-generate-label">Generate</span>
+                  <span className="ohf-generate-label">Generar</span>
                   {shortcut && <kbd className="ohf-kbd">{shortcut}</kbd>}
                 </button>
               </span>
@@ -408,7 +408,7 @@ function BatchStepper({
   const index = Math.max(0, counts.indexOf(value));
   const last = counts.length - 1;
   const max = counts[last]!;
-  const label = `Batch size — ${value} result${value > 1 ? "s" : ""} per press`;
+  const label = `Cantidad: ${value} resultado${value > 1 ? "s" : ""} por generación`;
 
   const step = (delta: number) => {
     const next = counts[Math.min(last, Math.max(0, index + delta))]!;
@@ -420,7 +420,7 @@ function BatchStepper({
       <button
         type="button"
         className="ohf-batch-step"
-        aria-label="Fewer results"
+        aria-label="Menos resultados"
         disabled={index <= 0}
         onClick={() => step(-1)}
       >
@@ -430,11 +430,11 @@ function BatchStepper({
         className="ohf-batch-value"
         role="spinbutton"
         tabIndex={0}
-        aria-label="Batch size"
+        aria-label="Cantidad de resultados"
         aria-valuemin={counts[0]}
         aria-valuemax={max}
         aria-valuenow={value}
-        aria-valuetext={`${value} of ${max}`}
+        aria-valuetext={`${value} de ${max}`}
         onKeyDown={(event) => {
           const delta =
             event.key === "ArrowUp" || event.key === "ArrowRight"
@@ -465,7 +465,7 @@ function BatchStepper({
       <button
         type="button"
         className="ohf-batch-step"
-        aria-label="More results"
+        aria-label="Más resultados"
         disabled={index >= last}
         onClick={() => step(1)}
       >

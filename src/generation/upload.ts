@@ -9,13 +9,13 @@ export async function uploadMedia(file: File): Promise<{ url: string }> {
       payload: { pathname: file.name, clientPayload: null, multipart: false },
     }),
   });
-  if (!res.ok) throw new Error("Failed to retrieve the client token");
+  if (!res.ok) throw new Error("no se pudo obtener el permiso de subida");
   const { clientToken, pathname } = (await res.json()) as {
     clientToken?: unknown;
     pathname?: unknown;
   };
   if (typeof clientToken !== "string" || typeof pathname !== "string") {
-    throw new Error("Failed to retrieve the client token");
+    throw new Error("no se pudo obtener el permiso de subida");
   }
   const blob = await put(pathname, file, { access: "public", token: clientToken });
   return { url: blob.url };

@@ -12,7 +12,7 @@
    the mark changes, not on every build. */
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -20,16 +20,15 @@ import { pathToFileURL } from "node:url";
 /* ---------- the mark ---------- */
 
 const PLATE = "#0e1011";
-const ACCENT = "#d1fe17";
-const INK = "#c2c9c8";
 
-/** The M on a 32-unit field: one accent stroke that flows down, up and across,
-    and the ink stem that closes it. Keep in step with src/app/icon.svg. */
-function brackets({ stroke = 2.5, accent = ACCENT, ink = INK } = {}) {
-  return `<g fill="none" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M7.5 23.5V9.5L16 18l8.5-8.5" stroke="${accent}"/>
-    <path d="M24.5 15.5v8" stroke="${ink}"/>
-  </g>`;
+/* The Make Flow IA mark, cut from the brand logo onto a transparent ground
+   (scripts/mark.png, 640×429). Keep in step with src/app/icon.svg, which
+   embeds a small copy of the same file. */
+const MARK = `data:image/png;base64,${readFileSync(join(import.meta.dirname, "mark.png")).toString("base64")}`;
+
+/** The mark centered on a 32-unit field. */
+function brackets({ opacity = 1 } = {}) {
+  return `<image x="5" y="8.63" width="22" height="14.74" opacity="${opacity}" href="${MARK}"/>`;
 }
 
 const markSvg = (size, opts) =>
@@ -146,7 +145,7 @@ const og = `<!doctype html><meta charset="utf-8">
   body{
     position:relative;
     background:
-      radial-gradient(110% 85% at 4% -8%, rgba(209,254,23,0.06), transparent 56%),
+      radial-gradient(110% 85% at 4% -8%, rgba(0,85,255,0.10), transparent 56%),
       radial-gradient(95% 115% at 104% 108%, rgba(255,255,255,0.032), transparent 60%),
       #0a0a0b;
     color:#edefef;
@@ -169,8 +168,8 @@ const og = `<!doctype html><meta charset="utf-8">
   .rule{margin:34px 0 28px;width:455px;height:1px;background:rgba(255,255,255,.09)}
   p{font-size:24px;line-height:1.45;color:#a8aeaf;max-width:530px;letter-spacing:-.011em}
 </style>
-<div class="field">${markSvg(454, { stroke: 1.15, accent: "rgba(209,254,23,0.17)", ink: "rgba(255,255,255,0.085)" })}</div>
-<div class="band mark">${markSvg(58, { stroke: 2.5 })}</div>
+<div class="field">${markSvg(454, { opacity: 0.14 })}</div>
+<div class="band mark">${markSvg(84)}</div>
 <div class="mid"><div class="band">
   <h1>MakeFlow Studio</h1>
   <div class="descriptor">Estudio de IA de código abierto</div>
